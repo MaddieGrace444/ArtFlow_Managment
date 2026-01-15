@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - ArtFlow</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ffcdd2;
+        }
+        .success-message {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #c8e6c9;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="header">
+            <h1>Login / REGISTER</h1>
+            <h2>Create Account</h2>
+        </div>
+        
+        <div class="login-form">
+            
+            <div id="message-container"></div>
+            
+            <form method="POST" action="signup.php" id="signup-form">
+                <div class="form-group">
+                    <label for="first_name">First Name</label>
+                    <input type="text" id="first_name" name="first_name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" id="last_name" name="last_name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">Create Account</button>
+            </form>
+            
+            <div class="links">
+                <a href="login.php">ALREADY HAVE AN ACCOUNT? LOGIN</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // Check URL for messages on page load
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const messageContainer = document.getElementById('message-container');
+        
+        // Show success message
+        if (urlParams.has('success')) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.textContent = decodeURIComponent(urlParams.get('success'));
+            messageContainer.appendChild(successDiv);
+        }
+        
+        // Show error messages
+        if (urlParams.has('error')) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            const errors = decodeURIComponent(urlParams.get('error')).split('||');
+            errors.forEach(error => {
+                const p = document.createElement('p');
+                p.textContent = error;
+                errorDiv.appendChild(p);
+            });
+            messageContainer.appendChild(errorDiv);
+        }
+        
+        // Populate form fields from URL parameters
+        ['first_name', 'last_name', 'username', 'email'].forEach(field => {
+            if (urlParams.has(field)) {
+                const input = document.getElementById(field);
+                if (input) {
+                    input.value = decodeURIComponent(urlParams.get(field));
+                }
+            }
+        });
+    };
+    </script>
+</body>
+</html>

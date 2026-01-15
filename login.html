@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ArtFlow</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ffcdd2;
+        }
+        .success-message {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #c8e6c9;
+        }
+        .info-message {
+            background-color: #e3f2fd;
+            color: #1565c0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #bbdefb;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="header">
+            <h1>LOGIN / Register</h1>
+            <h2>Login to Your Account</h2>
+        </div>
+        
+        <div class="login-form">
+            <!-- Container for messages (filled by JavaScript) -->
+            <div id="message-container"></div>
+            
+            <form method="POST" action="login.php" id="login-form">
+                <div class="form-group">
+                    <label for="username">Username or Email</label>
+                    <input type="text" id="username" name="username" 
+                           placeholder="Enter your username or email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" 
+                           placeholder="Enter your password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+            
+            <div class="links">
+                <a href="signup.html">DON'T HAVE AN ACCOUNT? SIGN UP</a>
+                <br>
+                <a href="test_db.php" style="font-size: 12px; color: #666;">Test Database Connection</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // Function to show messages from URL parameters
+    function showMessagesFromURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const messageContainer = document.getElementById('message-container');
+        
+        // Clear any existing messages
+        messageContainer.innerHTML = '';
+        
+        // Show success message
+        if (urlParams.has('success')) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.textContent = decodeURIComponent(urlParams.get('success'));
+            messageContainer.appendChild(successDiv);
+        }
+        
+        // Show error message
+        if (urlParams.has('error')) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = decodeURIComponent(urlParams.get('error'));
+            messageContainer.appendChild(errorDiv);
+        }
+        
+        // Show info message (for logout, etc.)
+        if (urlParams.has('info')) {
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'info-message';
+            infoDiv.textContent = decodeURIComponent(urlParams.get('info'));
+            messageContainer.appendChild(infoDiv);
+        }
+        
+        // Show loggedout message
+        if (urlParams.has('loggedout')) {
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'info-message';
+            infoDiv.textContent = "You have been logged out successfully.";
+            messageContainer.appendChild(infoDiv);
+        }
+        
+        // Populate username field if provided
+        if (urlParams.has('username')) {
+            document.getElementById('username').value = decodeURIComponent(urlParams.get('username'));
+        }
+    }
+    
+    // Run when page loads
+    window.onload = showMessagesFromURL;
+    
+    // Optional: Form validation before submit
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        
+        if (!username || !password) {
+            e.preventDefault();
+            alert('Please fill in all fields');
+            return false;
+        }
+    });
+    </script>
+</body>
+</html>
